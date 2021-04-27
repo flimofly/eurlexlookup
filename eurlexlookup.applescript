@@ -243,7 +243,7 @@ tell application "BibDesk"
 					set theExpressionURI to "http://publications.europa.eu/resource/cellar/" & theExpressionID --concatenate the expression URI 
 					--display dialog theExpressionURI
 					set theMultipleChoiceResponse to (do shell script "curl -H \"Accept:application/pdf\" -H \"Accept-Language:eng\" " & theExpressionURI) --get the error response from the REST API with curl
-					do shell script "echo " & quoted form of theMultipleChoiceResponse & ">~/Desktop/output.txt" --uncomment for diagnostics
+					--do shell script "echo " & quoted form of theMultipleChoiceResponse & ">~/Desktop/output.txt" --uncomment for diagnostics
 					set theUrl to (do shell script "awk 'BEGIN{RS=\"title=\\\"item\\\">\";FS=\"<li title=\"} NR>1 {split($1,a,\"\\\"\") split($2,b,\"/>|</\") } {sub(/\\\"stream_name\\\">/, \"\",b[1])} {if (b[1] ~ /(.+ARRET.+)|(.+AVIS.+)/) {print a[2]}}'<<<" & quoted form of theMultipleChoiceResponse as text) --parse the error response and isolate the url whose stream_name has ARRET or AVIS in it, to get the judgment/opinion pdf rather than the report of the hearing
 					--display dialog theUrl -- uncomment for diagnostics
 					add theUrl to beginning of linked URLs
